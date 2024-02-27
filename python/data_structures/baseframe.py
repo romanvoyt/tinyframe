@@ -6,7 +6,7 @@ class BaseFrame:
     def __repr__(self):
         return str(self.data)
     
-    def __getitem__(self, key):
+    def __getitem__(self, key: str):
         if isinstance(key, str):
             return self.data[key]
         elif isinstance(key, int):
