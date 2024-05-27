@@ -2,7 +2,6 @@ from python.dataloader.tabular_loader import TabLoader
 from python.eda.data_explorer import DataExplorer
 from python.model.linear_models import LinearRegression
 import pandas as pd
-#TODO: Add test cases for TabLoader
 #TODO: Add test cases for LinearRegression
 #TODO: Add test cases for BaseModel
 
