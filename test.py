@@ -1,5 +1,6 @@
-# from python.dataloader import TabLoader
+from python.dataloader.tabular_loader import TabLoader
 from python.eda.data_explorer import DataExplorer
+from python.model.linear_models import LinearRegression
 import pandas as pd
 #TODO: Add test cases for TabLoader
 #TODO: Add test cases for LinearRegression
@@ -9,7 +10,11 @@ import pandas as pd
 def test_tab_loader():
     # Test case for TabLoader
     print("Test case for TabLoader")
-    pass
+    loader = TabLoader('test data/classification_data.csv', 'csv', verbose=True)
+    df = loader.load_spreadsheet()
+
+    print(df.head())
+    print("Test case for TabLoader passed")
 
 
 def test_linear_regression():
@@ -41,5 +46,10 @@ def test_data_explorer():
 
 if __name__ == '__main__':
     print("Running tests...")
+    test_linear_regression()
+    print("*"*50)
+    test_tab_loader()
+    print("*"*50)
     test_data_explorer()
+    print("*"*50)
     print("All tests passed!")
