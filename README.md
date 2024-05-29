@@ -17,4 +17,9 @@ deep_model - special module to build deep learning models.
 1. Complete and improve the framework's structure.
 2. Rewrite tabular loader to be implemented standard python library.
 3. Finish developing the model module and test it in test.py on some publicly available datasets.
+4. Add tree based models (Decision tree, Random forest)
+5. Add boosting models (GradientBoost, LGBM, AdaBoost)
+6. Add neural network module
+7. Add preprocessing module (data cleaning, imputing)
+8. improve EDA module
 
