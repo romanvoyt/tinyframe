@@ -25,11 +25,16 @@ class LinearRegression(BaseModel):
 class LogisticRegression(BaseModel):
     def __init__(self, learning_rate=0.01337, n_iters=1337):
         super().__init__()
+        if learning_rate <= 0:
+            raise ValueError('Learning rate must be greater than 0')
+        if n_iters <= 0:
+            raise ValueError('Number of iterations must be greater than 0')
         self.learning_rate = learning_rate
         self.n_iters = n_iters
     
     def sigmoid(self, x):
-        return 1 / (1 + np.exp(-x))
+        if x.any() >= 0:
+            return 1 / (1 + np.exp(-x))
     
     def fit(self, X, y):
         n_samples, n_features = X.shape
