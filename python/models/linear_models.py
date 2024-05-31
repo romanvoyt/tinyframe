@@ -33,7 +33,40 @@ class LinearRegression(BaseModel):
         return X @ self.weights
     
 class LogisticRegression(BaseModel):
+    """
+    Logistic Regression model for binary classification.
+
+    Parameters:
+    - learning_rate (float): The learning rate for gradient descent. Default is 0.01337.
+    - n_iters (int): The number of iterations for gradient descent. Default is 1337.
+
+    Attributes:
+    - learning_rate (float): The learning rate for gradient descent.
+    - n_iters (int): The number of iterations for gradient descent.
+    - weights (ndarray): The weights of the model.
+    - bias (float): The bias term of the model.
+
+    Methods:
+    - sigmoid(x): Computes the sigmoid function.
+    - fit(X, y): Fits the model to the training data.
+    - predict(X): Predicts the class labels for the input data.
+    - loss(y, y_predicted): Computes the loss function.
+
+    """
+
     def __init__(self, learning_rate=0.01337, n_iters=1337):
+        """
+        Initialize the LogisticRegression model.
+
+        Parameters:
+        - learning_rate (float): The learning rate for gradient descent. Default is 0.01337.
+        - n_iters (int): The number of iterations for gradient descent. Default is 1337.
+
+        Raises:
+        - ValueError: If learning_rate is less than or equal to 0.
+        - ValueError: If n_iters is less than or equal to 0.
+
+        """
         super().__init__()
         if learning_rate <= 0:
             raise ValueError('Learning rate must be greater than 0')
@@ -43,10 +76,28 @@ class LogisticRegression(BaseModel):
         self.n_iters = n_iters
     
     def sigmoid(self, x):
+        """
+        Compute the sigmoid function.
+
+        Parameters:
+        - x (ndarray): The input array.
+
+        Returns:
+        - ndarray: The output array after applying the sigmoid function.
+
+        """
         if x.any() >= 0:
             return 1 / (1 + np.exp(-x))
     
     def fit(self, X, y):
+        """
+        Fit the model to the training data.
+
+        Parameters:
+        - X (ndarray): The input features.
+        - y (ndarray): The target labels.
+
+        """
         n_samples, n_features = X.shape
         self.weights = np.zeros(n_features)
         self.bias = 0
@@ -65,10 +116,31 @@ class LogisticRegression(BaseModel):
                 print(f'Iteration: {_}, Loss: {self.loss(y, y_predicted)}')
 
     def predict(self, X) -> np.array:
+        """
+        Predict the class labels for the input data.
+
+        Parameters:
+        - X (ndarray): The input features.
+
+        Returns:
+        - ndarray: The predicted class labels.
+
+        """
         linear_model = np.dot(X, self.weights) + self.bias
         y_predicted = self.sigmoid(linear_model)
         y_predicted_cls = [1 if i > 0.5 else 0 for i in y_predicted]
         return np.array(y_predicted_cls)
     
     def loss(self, y, y_predicted):
+        """
+        Compute the loss function.
+
+        Parameters:
+        - y (ndarray): The target labels.
+        - y_predicted (ndarray): The predicted probabilities.
+
+        Returns:
+        - float: The computed loss.
+
+        """
         return - (1 / len(y)) * np.sum(y * np.log(y_predicted) + (1 - y) * (np.log(1 - y_predicted)))
