@@ -144,3 +144,41 @@ class LogisticRegression(BaseModel):
 
         """
         return - (1 / len(y)) * np.sum(y * np.log(y_predicted) + (1 - y) * (np.log(1 - y_predicted)))
+    
+
+
+class RidgeRegression(BaseModel):
+    """
+    Ridge Regression model.
+
+    Parameters:
+    - alpha (float): Regularization strength.
+
+    Methods:
+    - fit(X, y): Fit the model to the training data.
+    - predict(X): Make predictions on new data.
+
+    Attributes:
+    - weights (ndarray): Model weights after fitting the data.
+    """
+
+    def __init__(self, alpha=1.0):
+        super().__init__()
+        self.alpha = alpha
+
+    def fit(self, X, y):
+        if len(X.shape) == 1:
+            X = X.reshape(-1, 1)
+        if len(y.shape) == 1:
+            y = y.reshape(-1, 1)
+        if type(X) != np.ndarray or type(X) != np.array:
+            X = np.array(X)
+        if type(y) != np.array:
+            y = np.array(y)
+        n_samples, n_features = X.shape
+        self.weights = np.linalg.inv(X.T @ X + self.alpha * np.eye(n_features)) @ X.T @ y
+
+    def predict(self, X):
+        if type(X) != np.ndarray or type(X) != np.array:
+            X = np.array(X)
+        return X @ self.weights
