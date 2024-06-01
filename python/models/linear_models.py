@@ -182,3 +182,19 @@ class RidgeRegression(BaseModel):
         if type(X) != np.ndarray or type(X) != np.array:
             X = np.array(X)
         return X @ self.weights
+    
+
+class LassoRegression(BaseModel):
+    def __init__(self, l1):
+        super().__init__()
+        self.l1 = l1
+
+    def fit(self, X, y):
+        if len(X.shape) == 1:
+            X = X.reshape(-1, 1)
+        if len(y.shape) == 1:
+            y = y.reshape(-1, 1)
+        if type(X) != np.ndarray or type(X) != np.array:
+            X = np.array(X)
+        if type(y) != np.array:
+            y = np.array(y)
