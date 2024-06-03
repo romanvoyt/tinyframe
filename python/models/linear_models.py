@@ -185,8 +185,10 @@ class RidgeRegression(BaseModel):
     
 
 class LassoRegression(BaseModel):
-    def __init__(self, l1):
+    def __init__(self, iterations, learning_rate, l1):
         super().__init__()
+        self.iterations = iterations
+        self.learning_rate = learning_rate
         self.l1 = l1
 
     def fit(self, X, y):
@@ -198,3 +200,17 @@ class LassoRegression(BaseModel):
             X = np.array(X)
         if type(y) != np.array:
             y = np.array(y)
+        n_samples, n_features = X.shape
+        self.weights = np.zeros((n_features, 1))
+        self.bias = 0
+        for _ in range(self.iterations):
+            y_predicted = X @ self.weights + self.bias
+            dw = (1 / n_samples) * X.T @ (y_predicted - y) + self.l1 * np.sign(self.weights)
+            db = (1 / n_samples) * np.sum(y_predicted - y)
+            self.weights -= self.learning_rate * dw
+            self.bias -= self.learning_rate * db
+    
+    def predict(self, X):
+        if type(X) != np.ndarray or type(X) != np.array:
+            X = np.array(X)
+        return X @ self.weights + self.bias
