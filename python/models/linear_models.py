@@ -243,3 +243,38 @@ class LassoRegression(BaseModel):
         if type(X) != np.ndarray or type(X) != np.array:
             X = np.array(X)
         return X @ self.weights + self.bias
+
+
+class ElasticNetRegression(BaseModel):
+    def __init__(self, iterations:int, learning_rate: float, l1: float, l2: float):
+        super().__init__()
+        self.iterations = iterations
+        self.learning_rate = learning_rate
+        self.l1 = l1
+        self.l2 = l2
+
+    def fit(self, X, y):
+        if len(X.shape) == 1:
+            X = X.reshape(-1, 1)
+        if len(y.shape) == 1:
+            y = y.reshape(-1, 1)
+        if type(X) != np.ndarray or type(X) != np.array:
+            X = np.array(X)
+        if type(y) != np.array:
+            y = np.array(y)
+
+        n_samples, n_features = X.shape
+        self.weights = np.zeros((n_features, 1))
+        self.bias = 0
+
+        for _ in range(self.iterations):
+            y_predicted = X @ self.weights + self.bias
+            dw = (1 / n_samples) * X.T @ (y_predicted - y) + self.l1 * np.sign(self.weights) + self.l2 * self.weights
+            db = (1 / n_samples) * np.sum(y_predicted - y)
+            self.weights -= self.learning_rate * dw
+            self.bias -= self.learning_rate * db
+        
+    def predict(self, X):
+        if type(X) != np.ndarray or type(X) != np.array:
+            X = np.array(X)
+        return X @ self.weights + self.bias
