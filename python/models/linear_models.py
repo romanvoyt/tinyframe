@@ -185,13 +185,33 @@ class RidgeRegression(BaseModel):
     
 
 class LassoRegression(BaseModel):
-    def __init__(self, iterations, learning_rate, l1):
+    """
+    Lasso Regression model.
+
+    Parameters:
+    - iterations (int): The number of iterations for training the model.
+    - learning_rate (float): The learning rate for updating the model parameters.
+    - l1 (float): The L1 regularization parameter.
+
+    Attributes:
+    - weights (ndarray): The learned weights of the model.
+    - bias (float): The learned bias of the model.
+    """
+
+    def __init__(self, iterations: int, learning_rate: float, l1: float):
         super().__init__()
         self.iterations = iterations
         self.learning_rate = learning_rate
         self.l1 = l1
 
-    def fit(self, X, y):
+    def fit(self, X: np.ndarray, y: np.ndarray):
+        """
+        Fit the Lasso Regression model to the given training data.
+
+        Parameters:
+        - X (ndarray): The input features of shape (n_samples, n_features).
+        - y (ndarray): The target values of shape (n_samples, 1).
+        """
         if len(X.shape) == 1:
             X = X.reshape(-1, 1)
         if len(y.shape) == 1:
@@ -210,7 +230,16 @@ class LassoRegression(BaseModel):
             self.weights -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
     
-    def predict(self, X):
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        """
+        Predict the target values for the given input features.
+
+        Parameters:
+        - X (ndarray): The input features of shape (n_samples, n_features).
+
+        Returns:
+        - ndarray: The predicted target values of shape (n_samples, 1).
+        """
         if type(X) != np.ndarray or type(X) != np.array:
             X = np.array(X)
         return X @ self.weights + self.bias
